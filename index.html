@@ -1,0 +1,87 @@
+// Connect to the database
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "book_db";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Create the books table
+$sql = "CREATE TABLE books (
+    book_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    book_title VARCHAR(50) NOT NULL,
+    book_author VARCHAR(50) NOT NULL,
+    edition VARCHAR(10) NOT NULL,
+    year INT(4) NOT NULL,
+    publisher_name VARCHAR(50) NOT NULL,
+    status VARCHAR(10) NOT NULL
+)";
+if ($conn->query($sql) === FALSE) {
+    echo "Error creating table: " . $conn->error;
+}
+
+// Insert some sample data
+$sql = "INSERT INTO books (book_title, book_author, edition, year, publisher_name, status)
+VALUES ('PHP for Beginners', 'John Smith', '1st', 2022, 'Publisher A', 'Reference'),
+       ('Advanced PHP', 'Jane Doe', '2nd', 2021, 'Publisher B', 'Stock'),
+       ('PHP Best Practices', 'Sam Lee', '3rd', 2020, 'Publisher C', 'Circulation')";
+if ($conn->query($sql) === FALSE) {
+    echo "Error inserting data: " . $conn->error;
+}
+
+// Get the number of books in each status
+$sql = "SELECT status, COUNT(*) as count FROM books GROUP BY status";
+$result = $conn->query($sql);
+
+echo "<h2>Number of Books</h2>";
+echo "<table>";
+echo "<tr><th>Status</th><th>Count</th></tr>";
+while($row = $result->fetch_assoc()) {
+    echo "<tr><td>" . $row["status"] . "</td><td>" . $row["count"] . "</td></tr>";
+}
+echo "</table>";
+
+// Search for a book by title
+$search_title = "Advanced PHP";
+$sql = "SELECT * FROM books WHERE book_title = '$search_title'";
+$result = $conn->query($sql);
+
+echo "<h2>Search Results</h2>";
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo "Book ID: " . $row["book_id"] . "<br>";
+        echo "Title: " . $row["book_title"] . "<br>";
+        echo "Author: " . $row["book_author"] . "<br>";
+        echo "Edition: " . $row["edition"] . "<br>";
+        echo "Year: " . $row["year"] . "<br>";
+        echo "Publisher: " . $row["publisher_name"] . "<br>";
+        echo "Status: " . $row["status"] . "<br>";
+    }
+} else {
+    echo "No results found.";
+}
+
+// Update a book's status
+$update_id = 2;
+$new_status = "Circulation";
+$sql = "UPDATE books SET status = '$new_status' WHERE book_id = $update_id";
+if ($conn->query($sql) === FALSE) {
+    echo "Error updating record: " . $conn->error;
+} else {
+    echo "Record updated successfully.";
+}
+
+// Delete a book
+$delete_id = 3;
+$sql = "DELETE FROM books WHERE book_id = $delete_id";
+if ($conn->query($sql) === FALSE
+
+
+
+
+Regenerate response
